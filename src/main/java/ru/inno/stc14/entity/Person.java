@@ -4,13 +4,13 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Person {
-    private int id;
-    private String name;
-    private Date birthDate;
+        private int id;
+        private String name;
+        private Date birthDate;
 
-    public int getId() {
-        return id;
-    }
+        public int getId() {
+            return id;
+        }
 
     public void setId(int id) {
         this.id = id;

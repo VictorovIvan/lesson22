@@ -7,14 +7,14 @@
     <meta charset="UTF-8"/>
 </head>
 <body>
-
+<a href="/students_war_exploded/content.jsp">Main page</a>
 <table>
-    <a href="/students_war_exploded/">Main page</a>
     <tr>
         <th>ID</th>
         <th>Name</th>
         <th>Birthday</th>
     </tr>
+    <br>
     <% List<Person> list = (List<Person>) request.getAttribute("persons");
         for (Person person : list) { %>
     <tr>
@@ -22,9 +22,8 @@
         <td><%=person.getName()%></td>
         <td><%=person.getBirthDate()%></td>
     </tr>
-    <br>
     <% } %>
+    </br>
 </table>
-<br>
 </body>
 </html>

@@ -37,7 +37,8 @@ public class PersonServiceImpl implements PersonService {
         return personDAO.addPerson(person);
     }
 
-    private Date safeParseDate(String birthStr) {
+    @Override
+    public Date safeParseDate(String birthStr) {
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         try {
             return format.parse(birthStr);

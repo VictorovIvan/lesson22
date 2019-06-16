@@ -1,5 +1,6 @@
 package ru.inno.stc14.servlet;
 
+import ru.inno.stc14.entity.Person;
 import ru.inno.stc14.service.PersonService;
 import ru.inno.stc14.service.PersonServiceImpl;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.List;
 
 @WebServlet(name = "authorization",
         loadOnStartup = 1,
@@ -26,7 +28,7 @@ public class AuthorizationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/authorization.jsp")
+        req.getRequestDispatcher("/index.jsp")
                 .forward(req, resp);
     }
 
@@ -34,14 +36,39 @@ public class AuthorizationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("utf-8");
         String name = req.getParameter("name");
-        String birth = req.getParameter("password");
-//        person.addPerson(name, birth);
+        String birthdayString = req.getParameter("birthday");
+        List<Person> res = person.getList();
 
-        // Если пароль совпадает то дальнейший переход иначе надпись парольнаправильный
+        try {
+            person.authorizationPerson.setBirthDate(person.safeParseDate(birthdayString));
+        } catch (Exception e) {
+            person.authorizationPerson.setBirthDate(person.safeParseDate("00.00.0000"));
+        }
+        person.authorizationPerson.setName(name);
 
+        if (containPerson(res)) {
+            resp.sendRedirect(req.getContextPath() + "/content");
+        } else {
+            resp.sendRedirect(req.getContextPath() + "/error.jsp");
+        }
+    }
 
-
-
-        //resp.sendRedirect(req.getContextPath() + "/person/list");
+    /**
+     * Check is contain user/password
+     *
+     * @param res result list
+     * @return Check user/password
+     */
+    private boolean containPerson(List<Person> res) {
+        boolean contained = false;
+        for (Person listOneObject : res) {
+            if (person.authorizationPerson.getName().equals(listOneObject.getName())) {
+                if (person.authorizationPerson.getBirthDate().equals(listOneObject.getBirthDate())) {
+                    contained = true;
+                    break;
+                }
+            }
+        }
+        return contained;
     }
 }
