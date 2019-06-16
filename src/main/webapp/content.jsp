@@ -9,8 +9,13 @@
     <title>Content</title>
 </head>
 <body>
-<% final String name = (String)request.getAttribute("authorization");%>
-<h1>Student: <%=name%> </h1>
+<% String name = (String) request.getAttribute("authorization");
+    if (name == null) {
+        name = "";
+    } else {
+        name = "Hello " + name;
+    }%>
+<h1><%=name%></h1>
 <ul>
     <li><a href="${pageContext.request.contextPath}/person/list">List students</a></li>
     <li><a href="${pageContext.request.contextPath}/person">New student</a></li>
